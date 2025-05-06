@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InterviewQuestionsApi.Application\InterviewQuestionsApi.Application.csproj" />
+    <ProjectReference Include="..\InterviewQuestionsApi.Infrastructure\InterviewQuestionsApi.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

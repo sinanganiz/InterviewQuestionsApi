@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InterviewQuestionsApi.Domain\InterviewQuestionsApi.Domain.csproj" />
-    <ProjectReference Include="..\InterviewQuestionsApi.Infrastructure\InterviewQuestionsApi.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
