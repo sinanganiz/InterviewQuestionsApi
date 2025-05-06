@@ -7,14 +7,20 @@ public class InterviewQuestion
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; } = string.Empty;
+    public string Id { get; set; } = null!;
 
-    [BsonElement("title")]
-    public string Title { get; set; } = string.Empty;
+    [BsonElement("question")]
+    public string Question { get; set; } = null!;
 
-    [BsonElement("description")]
-    public string Description { get; set; } = string.Empty;
+    [BsonElement("answer")]
+    public string Answer { get; set; } = null!;
 
     [BsonElement("tags")]
     public List<string> Tags { get; set; } = new();
+
+    [BsonElement("difficulty")]
+    public string Difficulty { get; set; } = "medium";
+
+    [BsonElement("createdAt")]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

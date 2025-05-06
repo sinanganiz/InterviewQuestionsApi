@@ -10,7 +10,7 @@ public class InterviewQuestionRepository : IInterviewQuestionRepository
 
     public InterviewQuestionRepository(IMongoDatabase database)
     {
-        _collection = database.GetCollection<InterviewQuestion>("interview_questions");
+        _collection = database.GetCollection<InterviewQuestion>("InterviewQuestions");
     }
 
     public async Task<List<InterviewQuestion>> GetAllAsync() =>

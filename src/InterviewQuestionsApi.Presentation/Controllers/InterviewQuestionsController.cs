@@ -1,3 +1,5 @@
+using AutoMapper;
+using InterviewQuestionsApi.Application.DTOs;
 using InterviewQuestionsApi.Application.Repositories;
 using InterviewQuestionsApi.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -9,43 +11,51 @@ namespace InterviewQuestionsApi.Presentation.Controllers;
 public class InterviewQuestionsController : ControllerBase
 {
     private readonly IInterviewQuestionRepository _repository;
+    private readonly IMapper _mapper;
 
-    public InterviewQuestionsController(IInterviewQuestionRepository repository)
+    public InterviewQuestionsController(IInterviewQuestionRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAllAsync()
     {
         var questions = await _repository.GetAllAsync();
         return Ok(questions);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(string id)
+    public async Task<IActionResult> GetByIdAsync(string id)
     {
         var question = await _repository.GetByIdAsync(id);
         return question is null ? NotFound() : Ok(question);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(InterviewQuestion question)
+    public async Task<IActionResult> CreateAsync([FromBody] InterviewQuestionCreateDto dto)
     {
-        await _repository.CreateAsync(question);
-        return CreatedAtAction(nameof(GetById), new { id = question.Id }, question);
+        var model = _mapper.Map<InterviewQuestion>(dto);
+        await _repository.CreateAsync(model);
+        return CreatedAtAction(nameof(GetByIdAsync), new { id = model.Id }, _mapper.Map<InterviewQuestionResponseDto>(model));
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(string id, InterviewQuestion question)
+    public async Task<IActionResult> UpdateAsync(string id, [FromBody] InterviewQuestionUpdateDto dto)
     {
-        if (id != question.Id) return BadRequest();
-        await _repository.UpdateAsync(question);
+        var existing = await _repository.GetByIdAsync(id);
+        if (existing is null)
+            return NotFound();
+
+        _mapper.Map(dto, existing);
+
+        await _repository.UpdateAsync(existing);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id)
+    public async Task<IActionResult> DeleteAsync(string id)
     {
         await _repository.DeleteAsync(id);
         return NoContent();
