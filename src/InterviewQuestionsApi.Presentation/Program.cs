@@ -2,6 +2,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using InterviewQuestionsApi.Application.Mappings;
 using InterviewQuestionsApi.Infrastructure;
+using InterviewQuestionsApi.Presentation.Middleware;
 using InterviewQuestionsApi.Presentation.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
